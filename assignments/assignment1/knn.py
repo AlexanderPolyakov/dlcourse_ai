@@ -39,7 +39,7 @@ class KNN:
 
     def compute_distances_two_loops(self, X):
         '''
-        Computes L1 distance from every sample of X to every training sample
+        Computes distance from every sample of X to every training sample
         Uses simplest implementation with 2 Python loops
 
         Arguments:
@@ -54,12 +54,12 @@ class KNN:
         dists = np.zeros((num_test, num_train), np.float32)
         for i_test in range(num_test):
             for i_train in range(num_train):
-                # TODO: Fill dists[i_test][i_train]
-                pass
+                dists[i_test][i_train] = np.sum(np.abs(self.train_X[i_train] - X[i_test]))
+        return dists
 
     def compute_distances_one_loop(self, X):
         '''
-        Computes L1 distance from every sample of X to every training sample
+        Computes distance from every sample of X to every training sample
         Vectorizes some of the calculations, so only 1 loop is used
 
         Arguments:
@@ -74,13 +74,14 @@ class KNN:
         dists = np.zeros((num_test, num_train), np.float32)
         for i_test in range(num_test):
             # TODO: Fill the whole row of dists[i_test]
-            # without additional loops or list comprehensions
-            pass
+            # without additional loops
+            dists[i_test] = np.sum(np.abs(self.train_X - X[i_test]), axis=1)
+        return dists
 
     def compute_distances_no_loops(self, X):
         '''
-        Computes L1 distance from every sample of X to every training sample
-        Fully vectorizes the calculations using numpy
+        Computes distance from every sample of X to every training sample
+        Fully vectorizes the calculations
 
         Arguments:
         X, np array (num_test_samples, num_features) - samples to run
@@ -94,7 +95,8 @@ class KNN:
         # Using float32 to to save memory - the default is float64
         dists = np.zeros((num_test, num_train), np.float32)
         # TODO: Implement computing all distances with no loops!
-        pass
+        dists = np.sum(np.abs(np.reshape(self.train_X, (1, num_train, -1)) - np.reshape(X, (num_test, 1, -1))), axis=2)
+        return dists
 
     def predict_labels_binary(self, dists):
         '''
