@@ -1,3 +1,3 @@
 mkdir data
 cd data
-wget -c http://ufldl.stanford.edu/housenumbers/train_32x32.mat http://ufldl.stanford.edu/housenumbers/test_32x32.mat
+curl -O http://ufldl.stanford.edu/housenumbers/train_32x32.mat -O http://ufldl.stanford.edu/housenumbers/test_32x32.mat
